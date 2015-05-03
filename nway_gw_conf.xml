@@ -1,0 +1,5 @@
+<?xml version="1.0" ?>
+<configuration>
+    <freeswitch_conf_path>/usr/local/freeswitch/conf</freeswitch_conf_path>
+    <listen_port>9099</listen_port>
+</configuration>

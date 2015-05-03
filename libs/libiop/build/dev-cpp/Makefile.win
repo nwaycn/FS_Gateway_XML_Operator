@@ -1,0 +1,67 @@
+# Project: libiop
+# Makefile created by Dev-C++ 4.9.9.2
+
+CPP  = g++.exe
+CC   = gcc.exe
+WINDRES = windres.exe
+RES  = 
+OBJ  = ../../src/array_list.o ../../src/iop.o ../../src/iop_as_queue.o ../../src/iop_buf.o ../../src/iop_epoll.o ../../src/iop_log_service.o ../../src/iop_poll.o ../../src/iop_select.o ../../src/iop_service.o ../../src/iop_thread.o ../../src/iop_timer.o ../../src/iop_util.o ../../src/iop_url.o $(RES)
+LINKOBJ  = ../../src/array_list.o ../../src/iop.o ../../src/iop_as_queue.o ../../src/iop_buf.o ../../src/iop_epoll.o ../../src/iop_log_service.o ../../src/iop_poll.o ../../src/iop_select.o ../../src/iop_service.o ../../src/iop_thread.o ../../src/iop_timer.o ../../src/iop_util.o ../../src/iop_url.o $(RES)
+LIBS =  -L"C:/Program Files/DEV-CPP/Lib"  
+INCS =  -I"C:/Program Files/DEV-CPP/include"  -I"F:/wk/code/libiop-code/inc" 
+CXXINCS =  -I"C:/Program Files/DEV-CPP/lib/gcc/mingw32/3.4.2/include"  -I"C:/Program Files/DEV-CPP/include/c++/3.4.2/backward"  -I"C:/Program Files/DEV-CPP/include/c++/3.4.2/mingw32"  -I"C:/Program Files/DEV-CPP/include/c++/3.4.2"  -I"C:/Program Files/DEV-CPP/include"  -I"F:/wk/code/libiop-code/inc" 
+BIN  = ../../libiop.a
+CXXFLAGS = $(CXXINCS)  
+CFLAGS = $(INCS)  
+RM = rm -f
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before ../../libiop.a all-after
+
+
+clean: clean-custom
+	${RM} $(OBJ) $(BIN)
+
+$(BIN): $(LINKOBJ)
+	ar r $(BIN) $(LINKOBJ)
+	ranlib $(BIN)
+
+../../src/array_list.o: ../../src/array_list.c
+	$(CC) -c ../../src/array_list.c -o ../../src/array_list.o $(CFLAGS)
+
+../../src/iop.o: ../../src/iop.c
+	$(CC) -c ../../src/iop.c -o ../../src/iop.o $(CFLAGS)
+
+../../src/iop_as_queue.o: ../../src/iop_as_queue.c
+	$(CC) -c ../../src/iop_as_queue.c -o ../../src/iop_as_queue.o $(CFLAGS)
+
+../../src/iop_buf.o: ../../src/iop_buf.c
+	$(CC) -c ../../src/iop_buf.c -o ../../src/iop_buf.o $(CFLAGS)
+
+../../src/iop_epoll.o: ../../src/iop_epoll.c
+	$(CC) -c ../../src/iop_epoll.c -o ../../src/iop_epoll.o $(CFLAGS)
+
+../../src/iop_log_service.o: ../../src/iop_log_service.c
+	$(CC) -c ../../src/iop_log_service.c -o ../../src/iop_log_service.o $(CFLAGS)
+
+../../src/iop_poll.o: ../../src/iop_poll.c
+	$(CC) -c ../../src/iop_poll.c -o ../../src/iop_poll.o $(CFLAGS)
+
+../../src/iop_select.o: ../../src/iop_select.c
+	$(CC) -c ../../src/iop_select.c -o ../../src/iop_select.o $(CFLAGS)
+
+../../src/iop_service.o: ../../src/iop_service.c
+	$(CC) -c ../../src/iop_service.c -o ../../src/iop_service.o $(CFLAGS)
+
+../../src/iop_thread.o: ../../src/iop_thread.c
+	$(CC) -c ../../src/iop_thread.c -o ../../src/iop_thread.o $(CFLAGS)
+
+../../src/iop_timer.o: ../../src/iop_timer.c
+	$(CC) -c ../../src/iop_timer.c -o ../../src/iop_timer.o $(CFLAGS)
+
+../../src/iop_util.o: ../../src/iop_util.c
+	$(CC) -c ../../src/iop_util.c -o ../../src/iop_util.o $(CFLAGS)
+
+../../src/iop_url.o: ../../src/iop_url.c
+	$(CC) -c ../../src/iop_url.c -o ../../src/iop_url.o $(CFLAGS)

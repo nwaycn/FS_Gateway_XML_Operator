@@ -1,0 +1,11 @@
+package nway_fs_opterator;
+
+message MsgHead
+{
+	
+	required int32 command=1;
+	
+	required int32 nway_length = 2;//代替length
+	required int32 cmd_flag = 3; //标记，用于很多命令时，在异步操作时，回应的标记，暂时先用int32,以后可扩为in64或uuid
+	
+}

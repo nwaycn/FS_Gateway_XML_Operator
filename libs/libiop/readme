@@ -1,0 +1,136 @@
+0. BUILDING AND INSTALLATION (Briefly)
+
+
+1. LINUX
+   Linux系统下编译与测试libiop
+To build libiop, type
+	要编译libiop, 请输入以下命令
+$ tar xvfz iop-x.x.x.tar.gz
+$ cd iop
+$ cd libiop
+$ make
+
+You can find libiop.so
+make结束后，你可以在当前目录找到生成的库文件libiop.so
+
+To run the test,type
+	要运行测试程序，请输入以下命令
+$ cp libiop.so iop_test
+$ cd iop_test
+$ make
+$ export LD_LIBRARY_PATH=.
+$ ./test
+
+test is a tcp echo server, listen on port 7777.
+测试程序是一个tcp echo服务器，监听7777端口.
+You can test it by telnet tools.
+你可以使用telnet工具测试这个服务.
+
+2.Windows
+	Windows下编译与测试libiop
+	a).use mingw32 (使用mignw来编译libiop)
+		make -f makefile.mingw
+	b).use dev-cpp IDE
+		just open this file: .\libiop\build\dev-cpp\libiop.dev
+	c). use visual studio 2008 IDE:
+		juse open libiop\libiop.sln
+
+
+	To run the test(Windows下测试libiop)
+		a). use mingw32
+			cd test
+			copy ..\libiop.a .
+			make -f makefile.mingw
+			test.exe
+		b). use dev-cpp or vc2008 IDE
+			test.exe
+			
+Bug report: jonas88@sina.com
+
+Example(一个简单的例子）:
+
+#ifdef WIN32
+#include "stdafx.h"
+#else
+typedef char _TCHAR;
+#define _tmain main
+#endif
+
+#include <stdio.h>
+#include <stdlib.h>
+
+#include "../inc/iop_log_service.h"
+#include "../inc/iop_server.h"
+
+int my_echo_parser(char *buf, int len){return len;}
+
+int my_echo_processor(iop_base_t *base,int id,char *data,int len,void *arg)
+{
+	int r = 0;
+	char buf[1024];
+	buf[1023] = 0;
+	strncpy(buf,data,1023);
+	printf("recv data len=%d,data=%s",len,buf);
+	fflush(stdout);
+	r = iop_buf_send(base,id,data,len);
+	if( r < 0){printf("iop_buf_send error.\n"); return -1;}
+	return 0;
+}
+
+
+int my_echo_on_error(iop_base_t *base, int id,int err, void *arg)
+{
+	switch(err)
+	{
+	case IOP_ERR_TIMEOUT:
+		LOG_DBG("id %d timeout.\n",id);
+		break;
+	case IOP_ERR_SOCKET:
+		LOG_DBG("id %d socket error.\n",id);
+		break;
+	case IOP_ERR_NO_MEM:
+		LOG_DBG("id %d no memory.\n",id);
+		break;
+	}
+	return -1;
+}
+
+void my_echo_on_connect(iop_base_t *base, int id, void *arg)
+{
+	LOG_DBG("id %d connected.\n",id);
+}
+
+void my_echo_on_destroy(iop_base_t *base, int id, void *arg)
+{
+	LOG_DBG("id %d destroy.\n",id);
+}
+
+void echo_server_test()
+{
+	int keepalive_timeout = 60;
+	iop_base_t *base = iop_base_new(10240);
+	printf("create a new iop_base_t object.\n"); 
+	iop_add_tcp_server(base,"0.0.0.0",7777,
+		my_echo_parser,my_echo_processor,
+		my_echo_on_connect,my_echo_on_destroy,my_echo_on_error,
+		keepalive_timeout);
+	printf("create a new tcp server on port 7777.\n");
+	printf("start iop run loop.\n");
+	iop_run(base);
+	
+}
+
+
+int _tmain(int argc, _TCHAR* argv[])
+{
+	return echo_server_test();
+}
+
+
+
+---------------------------------------
+libiop项目QQ交流群：195671191
+email:jonas88@sina.com 
+张荐林,shenzhen china
+enjoy!
+

@@ -1,0 +1,84 @@
+package nway_fs_opterator;
+
+//定义gateway
+
+message nway_gateway
+{
+	required string gateway_name =1;;
+	optional string username = 2;
+	optional string realm = 3;
+	optional string from_user = 4;
+	optional string from_domain = 5;
+	optional string password =6;
+	optional string extension = 7;
+	optional string proxy = 8;
+	optional string expire_seconds= 9 ;
+	optional string register = 10;
+	optional string register_transport =11;
+	optional string retry_seconds = 12;
+	optional string caller_id_in_from = 13;
+	optional string contact_params = 14;
+	optional string ping = 15;
+	optional string filename = 16;
+	optional string register_proxy = 17;
+	
+}
+
+enum nway_op_status
+{
+	success =1;
+	failed = 2;
+	notfound =3;
+	unknow = 4;
+	
+}
+//针对freeswitch的gateway进行查，增，改，删进行接口定义
+//批量查询请求
+message get_nway_gateways_req
+{
+	required int32 start_pos = 1 ; //开始的第几个，按文件ls时的顺序排序
+	required int32 number_per_page = 2;//要获取的个数
+}
+//回应包
+message get_nway_gateways_rsp
+{
+	required nway_op_status status = 1;
+	repeated nway_gateway gateways = 2;
+}
+
+//-------------------------------------------------------------------------------
+message add_nway_gateway_req
+{
+	required nway_gateway gateway =1;
+	
+}
+message add_nway_gateway_rsp
+{
+	required string gateway_name = 1;
+	required nway_op_status status = 2;
+	optional string res_text = 3;
+}
+//--------------------------------------------------------------------------------
+message edit_nway_gateway_req
+{
+	required nway_gateway gateway=1;
+}
+message edit_nway_gateway_rsp
+{
+	required string gateway_name = 1;
+	required nway_op_status status = 2;
+	optional string res_text = 3;
+}
+//--------------------------------------------------------------------------------
+
+message erase_nway_gateway_req
+{
+	required nway_gateway gateway = 1;
+}
+message erase_nway_gateway_rsp
+{
+	required string gateway_name = 1;
+	required nway_op_status status = 2;
+	optional string res_text = 3;
+}
+

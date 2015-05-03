@@ -1,0 +1,28 @@
+CC = gcc
+CXX = g++
+
+INC_DIR = ./inc
+
+CFLAGS = -c -Wall
+CFLAGS += -g
+CFLAGS += -I$(INC_DIR)
+
+LFLAGS=
+RM = del
+
+
+HEADS = $(wildcard $(INC_DIR)/*.h)
+
+SOURCES = $(wildcard ./src/*.c)
+OBJS = $(SOURCES:.c=.o)
+TARGET = libiop.a
+
+all:$(TARGET)
+$(TARGET):$(OBJS) $(SOURCES) $(HEADS)
+	ar r $@ $(OBJS) $(LFLAGS)
+
+$(OBJS):%.o:%.c $(HEADS) 
+	$(CC) $(CFLAGS) $< -o $@
+
+clean:
+	$(RM) .\src\*.o $(TARGET)
