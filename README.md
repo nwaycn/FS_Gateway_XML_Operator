@@ -2,20 +2,23 @@
 用于将FreeSWITCH的Gateway接口化，采用c/s模型传输数据，数据打包用google::protobuf,c端为动态库，可以扩展为restful,webservice,或嵌入到第三方app中应用
 
 当前版本支持直接调用库来处理FreeSWITCH的conf/sip_profile/external下的文件，头文件如下：
-include "configure.h"
-include "../common/nwayfile.h"
-include "../common/gateway_file.h"
+        include "configure.h"
+        include "../common/nwayfile.h"
+        include "../common/gateway_file.h"
 
 如果没有配置过路径或其它的配置项，则先配置一个默认的配置文件：
-save_sample_config("/usr/local/freeswitch/conf/sip_profile/external",9099);
+
+        save_sample_config("/usr/local/freeswitch/conf/sip_profile/external",9099);
 /usr/local/freeswitch/conf/sip_profile/external 为配置路径
 9099为监听网络请求连接的端口，tcp的
 
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 
-nway_filename* files = (nway_filename*)malloc(sizeof(nway_filename));
+        nway_filename* files = (nway_filename*)malloc(sizeof(nway_filename));
 这是一个配置的网关文件的列表结构体
-如果采用指针使用的话，则在使用结束时，调用destory_file_list(files);来释放
+如果采用指针使用的话，则在使用结束时，调用
+        destory_file_list(files);
+        来释放
 
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 
