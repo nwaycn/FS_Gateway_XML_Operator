@@ -1,6 +1,18 @@
 # FS_Gateway_XML_Operator
 用于将FreeSWITCH的Gateway接口化，采用c/s模型传输数据，数据打包用google::protobuf,c端为动态库，可以扩展为restful,webservice,或嵌入到第三方app中应用
 
+how to build:
+
+windows中：
+
+1. github中下载protobuf,https://github.com/google/protobuf，并编译它生成lib库
+
+2. 在vs2010中打开sln文件，在属性中把protobuf的include和lib路径加到工程目录中
+
+3. 其余部分已包含在了工程中，可以直接编译
+
+
+
 当前版本支持直接调用库来处理FreeSWITCH的conf/sip_profile/external下的文件，头文件如下：
         include "configure.h"
         include "../common/nwayfile.h"
