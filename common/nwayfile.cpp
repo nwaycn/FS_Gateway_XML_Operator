@@ -198,3 +198,32 @@ int nway_remove( const char* filename )
 {
 	return (remove(filename)== 0 );
 }
+
+int nway_reload_gateway( const char* host,const char* port,const char* password )
+{
+	char szCmd[255] = {0};
+	sprintf (szCmd," fs_cli ");
+	if (host)
+	{
+		strcat(szCmd, " -H ");
+		strcat(szCmd,host);
+
+	}
+	if (port)
+	{
+		strcat(szCmd," -P ");
+		strcat(szCmd,port);
+	}
+	if (password)
+	{
+		strcat(szCmd, " -p ");
+		strcat(szCmd, password);
+	}
+	strcat(szCmd, " \"sofia profile external restart\"" );
+#ifdef WIN32
+	system(szCmd);
+#else
+	system(szCmd);
+#endif
+	return 0;
+}

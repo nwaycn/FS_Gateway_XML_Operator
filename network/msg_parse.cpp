@@ -148,6 +148,31 @@ int exch_msg_parse( iop_base_t* base, int id,const char* data,int len , const ch
 			iop_buf_send(base,id,send_data.c_str(),send_data.length());
 		}
 		break;
+	case GXOP_CMD_GET_GATEWAY_RELOAD_REQ:
+		{
+			reload_gateway_req req;
+			reload_gateway_rsp rsp;
+			char* mybuf =(char*) malloc(h.nway_length());
+			memcpy(mybuf,buf+ nheadlen,h.nway_length());
+			req.ParseFromArray(mybuf, h.nway_length());
+			free(mybuf);
+			int nres = nway_reload_gateway(req.host().c_str(),req.port().c_str(),req.password().c_str());
+			nway_op_status st = success;
+			if (nres != 0)
+			{
+				st = failed;
+			}
+			rsp.set_status(st);
+			MsgHead rsph;
+			rsph.set_nway_length(rsp.ByteSize());
+			rsph.set_command(GXOP_CMD_GET_GATEWAY_RELOAD_RSP);
+			rsph.set_cmd_flag(id);
+			string send_data;
+			rsph.AppendToString(&send_data);
+			rsp.AppendToString(&send_data);
+			iop_buf_send(base,id,send_data.c_str(),send_data.length());
+		}
+		break;
 	default:
 		{
 			MsgHead rsph;

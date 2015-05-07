@@ -41,5 +41,6 @@ int destory_file_list(nway_filename* files);
 int get_file_count(const char* fs_conf_path);
 int file_exists(const char *filename);
 int nway_remove(const char* filename);
+int nway_reload_gateway(const char* host,const char* port,const char* password);
 
 #endif

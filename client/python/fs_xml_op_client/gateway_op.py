@@ -20,6 +20,11 @@ ADDR = (host,port)
 app = Flask(__name__)
 auth = HTTPBasicAuth()
 
+def get_value(json,section):
+    if json and section in json:
+        return json[section]
+    return ''
+
 def check_data(theString):
     hd = head_pb2.MsgHead()
     head_str = theString[:7]
@@ -170,6 +175,34 @@ def modify_gateway(gateway_name,username, realm, from_user, from_domain, passwor
     }
     return return_list
 
+def reload_gateway(host, port, password):
+    req_ng = gateway_op_pb2.reload_gateway_req()
+    req_ng.host = host
+    req_ng.port = port
+    req_ng.password = password
+
+    req_hd = head_pb2.MsgHead()
+    req_hd.command = 10043
+    req_hd.nway_length = req_ng.ByteSize()
+    req_hd.cmd_flag = 0
+    s_req_hd = req_hd.SerializeToString()
+    s_req_ng = req_ng.SerializeToString()
+    s_req_data = s_req_hd + s_req_ng
+    tcpCliSock = socket(AF_INET,SOCK_STREAM)
+    tcpCliSock.connect(ADDR)
+
+    tcpCliSock.send(s_req_data)
+    rsp_data = recv_data(tcpCliSock)
+    tcpCliSock.close()
+    rsp_hd =head_pb2.MsgHead()
+    rsp_ng = gateway_op_pb2.reload_gateway_rsp()
+
+    rsp_ng.ParseFromString(rsp_data[7:])
+    return_list ={
+        'status':rsp_ng.status
+    }
+    return return_list
+
 def get_gateways(start_pos,number_per_page):
     req_ng = gateway_op_pb2.get_nway_gateways_req()
     req_ng.start_pos = 1
@@ -266,22 +299,22 @@ def add_gateway_r():
     if not request.json or not 'gateway_name' in request.json :
         abort(400)
     gateway_name = request.json['gateway_name']
-    username = request.json['username']
-    realm = request.json['realm']
-    from_user = request.json['from_user']
-    from_domain = request.json['from_domain']
-    password = request.json['password']
-    extension = request.json['extension']
-    proxy = request.json['proxy']
-    expire_seconds = request.json['expire_seconds']
-    register = request.json['register']
-    register_transport = request.json['register_transport']
-    retry_seconds = request.json['retry_seconds']
-    caller_id_in_from = request.json['caller_id_in_from']
-    contact_params = request.json['contact_params']
-    ping = request.json['ping']
-    filename = request.json['filename']
-    register_proxy = request.json['register_proxy']
+    username = get_value(request.json,'username')
+    realm = get_value(request.json,'realm')      #request.json[]
+    from_user = get_value(request.json,'from_user')
+    from_domain = get_value(request.json,'from_domain')
+    password = get_value(request.json,'password')
+    extension = get_value(request.json,'extension')
+    proxy = get_value(request.json,'proxy')
+    expire_seconds = get_value(request.json,'expire_seconds')
+    register = get_value(request.json,'register')
+    register_transport = get_value(request.json,'register_transport')
+    retry_seconds = get_value(request.json,'retry_seconds')
+    caller_id_in_from = get_value(request.json,'caller_id_in_from')
+    contact_params = get_value(request.json,'contact_params')
+    ping = get_value(request.json,'ping')
+    filename = get_value(request.json,'filename')
+    register_proxy = get_value(request.json,'register_proxy')
     res = add_gateway(gateway_name,username, realm, from_user, from_domain, password, extension ,\
         proxy, expire_seconds, register, register_transport, retry_seconds, caller_id_in_from, \
     contact_params, ping, filename, register_proxy)
@@ -293,22 +326,22 @@ def edit_gateway_r():
     if not request.json or not 'gateway_name' in request.json :
         abort(400)
     gateway_name = request.json['gateway_name']
-    username = request.json['username']
-    realm = request.json['realm']
-    from_user = request.json['from_user']
-    from_domain = request.json['from_domain']
-    password = request.json['password']
-    extension = request.json['extension']
-    proxy = request.json['proxy']
-    expire_seconds = request.json['expire_seconds']
-    register = request.json['register']
-    register_transport = request.json['register_transport']
-    retry_seconds = request.json['retry_seconds']
-    caller_id_in_from = request.json['caller_id_in_from']
-    contact_params = request.json['contact_params']
-    ping = request.json['ping']
-    filename = request.json['filename']
-    register_proxy = request.json['register_proxy']
+    username = get_value(request.json,'username')
+    realm = get_value(request.json,'realm')      #request.json[]
+    from_user = get_value(request.json,'from_user')
+    from_domain = get_value(request.json,'from_domain')
+    password = get_value(request.json,'password')
+    extension = get_value(request.json,'extension')
+    proxy = get_value(request.json,'proxy')
+    expire_seconds = get_value(request.json,'expire_seconds')
+    register = get_value(request.json,'register')
+    register_transport = get_value(request.json,'register_transport')
+    retry_seconds = get_value(request.json,'retry_seconds')
+    caller_id_in_from = get_value(request.json,'caller_id_in_from')
+    contact_params = get_value(request.json,'contact_params')
+    ping = get_value(request.json,'ping')
+    filename = get_value(request.json,'filename')
+    register_proxy = get_value(request.json,'register_proxy')
     res = modify_gateway(gateway_name,username, realm, from_user, from_domain, password, extension ,\
         proxy, expire_seconds, register, register_transport, retry_seconds, caller_id_in_from, \
     contact_params, ping, filename, register_proxy)
@@ -322,6 +355,20 @@ def get_gateways_r():
     start_pos = int(request.json['start_pos'])
     number_per_page = int (request.json['number_per_page'])
     res = get_gateways(start_pos, number_per_page)
+    return jsonify(res) ,201
+
+@app.route('/api/v1.0/reload_gateways', methods=['GET'])
+@auth.login_required
+def reload_gateways_r():
+    #if not request.json or not 'host' in request.json or not 'port' in request.json:
+     #   abort(400)
+    host = ''
+    port = ''
+    password = ''
+    host = get_value(request.json,'shost')
+    port = get_value(request.json,'sport')
+    password = get_value(request.json,'spassword')
+    res = reload_gateway(host,port, password)
     return jsonify(res) ,201
 
 if __name__=="__main__":
