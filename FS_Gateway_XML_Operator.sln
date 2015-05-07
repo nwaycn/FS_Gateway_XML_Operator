@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "FS_Gateway_XML_Operator", "FS_Gateway_XML_Operator.vcxproj", "{A2E5C67B-A982-4A82-A087-3034BE898EF8}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client\client.vcxproj", "{5B3A4FAA-0C30-4412-9B3C-2FFEF49FA242}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{A2E5C67B-A982-4A82-A087-3034BE898EF8}.Debug|Win32.Build.0 = Debug|Win32
 		{A2E5C67B-A982-4A82-A087-3034BE898EF8}.Release|Win32.ActiveCfg = Release|Win32
 		{A2E5C67B-A982-4A82-A087-3034BE898EF8}.Release|Win32.Build.0 = Release|Win32
+		{5B3A4FAA-0C30-4412-9B3C-2FFEF49FA242}.Debug|Win32.ActiveCfg = Debug|Win32
+		{5B3A4FAA-0C30-4412-9B3C-2FFEF49FA242}.Debug|Win32.Build.0 = Debug|Win32
+		{5B3A4FAA-0C30-4412-9B3C-2FFEF49FA242}.Release|Win32.ActiveCfg = Release|Win32
+		{5B3A4FAA-0C30-4412-9B3C-2FFEF49FA242}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

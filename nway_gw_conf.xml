@@ -1,5 +1,6 @@
 <?xml version="1.0" ?>
 <configuration>
-    <freeswitch_conf_path>/usr/local/freeswitch/conf</freeswitch_conf_path>
-    <listen_port>9099</listen_port>
+    <freeswitch_conf_path>c:\xml</freeswitch_conf_path>
+    <listen_port>8098</listen_port>
+    <push_l_port>8099</push_l_port>
 </configuration>

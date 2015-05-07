@@ -32,6 +32,7 @@
 #define NWAY_GATEWAY_OPERATE_CONFIG_ROOT "configuration"
 #define NWAY_GATEWAY_OPERATE_CONFIG_FS_CONF_PATH "freeswitch_conf_path"
 #define NWAY_GATEWAY_OPERATE_CONFIG_PORT "listen_port"
+#define NWAY_GATEWAY_OPERATE_CONFIG_PUSH_PORT "push_l_port"
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -39,8 +40,8 @@ extern "C" {
 	//fs_conf_path, the path of freeswitch's conf directory
 	//port, the port of control gateway operator interface service
 	//result, 0 is success,other failed
-int load_config(char* fs_conf_path, short* port);
-int save_sample_config(const char* fs_conf_path, short port);
+int load_config(char* fs_conf_path, short* port, short* push_l_port);
+int save_sample_config(const char* fs_conf_path, short port, short push_l_port);
 
 #ifdef __cplusplus
 }

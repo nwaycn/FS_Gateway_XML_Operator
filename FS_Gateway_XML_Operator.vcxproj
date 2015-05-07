@@ -52,7 +52,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>libprotobufD.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libprotobufD.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -72,11 +72,28 @@
     <ClCompile Include="common\gateway_file.cpp" />
     <ClCompile Include="common\nwayfile.cpp" />
     <ClCompile Include="configure\configure.cpp" />
-    <ClCompile Include="configure\config_test.cpp" />
+    <ClCompile Include="libs\libiop\src\array_list.c" />
+    <ClCompile Include="libs\libiop\src\iop.c" />
+    <ClCompile Include="libs\libiop\src\iop_buf.c" />
+    <ClCompile Include="libs\libiop\src\iop_epoll.c" />
+    <ClCompile Include="libs\libiop\src\iop_hashmap.c" />
+    <ClCompile Include="libs\libiop\src\iop_iocp.c" />
+    <ClCompile Include="libs\libiop\src\iop_log_service.c" />
+    <ClCompile Include="libs\libiop\src\iop_poll.c" />
+    <ClCompile Include="libs\libiop\src\iop_select.c" />
+    <ClCompile Include="libs\libiop\src\iop_server.c" />
+    <ClCompile Include="libs\libiop\src\iop_thread.c" />
+    <ClCompile Include="libs\libiop\src\iop_timer.c" />
+    <ClCompile Include="libs\libiop\src\iop_url.c" />
+    <ClCompile Include="libs\libiop\src\iop_util.c" />
     <ClCompile Include="libs\tinyxml\tinystr.cpp" />
     <ClCompile Include="libs\tinyxml\tinyxml.cpp" />
     <ClCompile Include="libs\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="libs\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="network\connections.cpp" />
+    <ClCompile Include="network\msg_parse.cpp" />
+    <ClCompile Include="network\server.cpp" />
     <ClCompile Include="protobuf\src\gateway_op.pb.cc" />
     <ClCompile Include="protobuf\src\head.pb.cc" />
   </ItemGroup>
@@ -84,8 +101,30 @@
     <ClInclude Include="common\gateway_file.h" />
     <ClInclude Include="common\nwayfile.h" />
     <ClInclude Include="configure\configure.h" />
+    <ClInclude Include="libs\libiop\inc\array_list.h" />
+    <ClInclude Include="libs\libiop\inc\iop.h" />
+    <ClInclude Include="libs\libiop\inc\iop_buf.h" />
+    <ClInclude Include="libs\libiop\inc\iop_config.h" />
+    <ClInclude Include="libs\libiop\inc\iop_def.h" />
+    <ClInclude Include="libs\libiop\inc\iop_epoll.h" />
+    <ClInclude Include="libs\libiop\inc\iop_hashmap.h" />
+    <ClInclude Include="libs\libiop\inc\iop_iocp.h" />
+    <ClInclude Include="libs\libiop\inc\iop_list.h" />
+    <ClInclude Include="libs\libiop\inc\iop_log_service.h" />
+    <ClInclude Include="libs\libiop\inc\iop_obj_pool.h" />
+    <ClInclude Include="libs\libiop\inc\iop_poll.h" />
+    <ClInclude Include="libs\libiop\inc\iop_select.h" />
+    <ClInclude Include="libs\libiop\inc\iop_server.h" />
+    <ClInclude Include="libs\libiop\inc\iop_thread.h" />
+    <ClInclude Include="libs\libiop\inc\iop_timer.h" />
+    <ClInclude Include="libs\libiop\inc\iop_url.h" />
+    <ClInclude Include="libs\libiop\inc\iop_util.h" />
     <ClInclude Include="libs\tinyxml\tinystr.h" />
     <ClInclude Include="libs\tinyxml\tinyxml.h" />
+    <ClInclude Include="network\command.h" />
+    <ClInclude Include="network\connections.h" />
+    <ClInclude Include="network\msg_parse.h" />
+    <ClInclude Include="network\server.h" />
     <ClInclude Include="protobuf\src\gateway_op.pb.h" />
     <ClInclude Include="protobuf\src\head.pb.h" />
   </ItemGroup>

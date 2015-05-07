@@ -87,8 +87,8 @@ void push_on_destroy(iop_base_t *base, int id, void *arg)
 			conn_client& c = *it;
 			if (c.base == base)
 			{
-				list<conn_client>::iterator it2 = it;
-				it++;
+				list<conn_client>::iterator it2 = it++;
+
 				conn->push_list.erase(it2);
 				break;
 			}
@@ -149,10 +149,19 @@ int push_server( short port )
 
 int exch_parse(char *buf, int len)
 {
+	for (int i=0; i<len;i++)
+	{
+		printf("\\x%x",*(buf+i));
+	}
+	printf("\n");
+	int ilen = get_head_len();
 	MsgHead h;
-	h.ParseFromArray(buf,len);
+	char* mybuf=(char*)malloc(ilen);
+	memcpy(mybuf,buf,ilen);
+	h.ParseFromArray(mybuf,len);
 	int allLen = h.ByteSize();
-	int recvLen = h.nway_length() + sizeof(MsgHead);
+	int recvLen = h.nway_length() + get_head_len();
+	free(mybuf);
 	if (recvLen < len)
 	{
 		return 0;
@@ -199,13 +208,13 @@ void exch_on_destroy(iop_base_t *base, int id, void *arg)
 	if (conn)
 	{
 		list<conn_client>::iterator it= conn->exch_list.begin();
-		for (; it!= conn->push_list.end();it++)
+		for (; it!= conn->exch_list.end();it++)
 		{
 			conn_client& c = *it;
 			if (c.base == base)
 			{
-				list<conn_client>::iterator it2 = it;
-				it++;
+				list<conn_client>::iterator it2 = it++;
+				
 				conn->exch_list.erase(it2);
 				break;
 			}

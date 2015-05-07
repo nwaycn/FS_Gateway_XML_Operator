@@ -1,0 +1,25 @@
+1. 下载protobuf源代码（当前最新版本为：2.5.0） 
+#cd /opt 
+#wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+
+2. 解压，编译，安装 
+#tar zxvf protobuf-2.5.0.tar.gz 
+#cd protobuf-2.5.0 
+#./configure 
+#make 
+#make check 
+#make install
+
+3. 继续安装protobuf的python模块(如果不用python，可跳过这一步) 
+#cd ./python 
+#python setup.py build 
+#python setup.py test 
+#python setup.py install
+
+4. 安装完成，验证Linux命令 
+#protoc –version
+
+5. 验证Python模块是否被正确安装 
+#python 
+>>>import google.protobuf 
+如果没有报错，说明安装正常。

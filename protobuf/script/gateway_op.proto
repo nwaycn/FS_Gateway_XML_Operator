@@ -36,8 +36,9 @@ enum nway_op_status
 //批量查询请求
 message get_nway_gateways_req
 {
-	required int32 start_pos = 1 ; //开始的第几个，按文件ls时的顺序排序
-	required int32 number_per_page = 2;//要获取的个数
+	required string falg = 1;
+	required int32 start_pos = 2 ; //开始的第几个，按文件ls时的顺序排序
+	required int32 number_per_page = 3;//要获取的个数
 }
 //回应包
 message get_nway_gateways_rsp

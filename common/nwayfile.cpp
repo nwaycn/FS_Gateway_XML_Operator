@@ -14,7 +14,7 @@ int get_file_list( const char* fs_conf_path,nway_filename* files,int startpos, i
 {
 	int res_status = 0;
 	char szPath[255]={0};
-	int cur_pos=0;
+	int cur_pos=startpos;
 	nway_filename* curr_file=files;
 	bool bFirst = true;
 #ifdef WIN32

@@ -1,0 +1,4 @@
+首先从google上下载protobuf-2.5.0.zip和protoc-2.5.0-win32.zip，然后把protoc-2.5.0-win32.zip里的protoc.exe放到protobuf-2.5.0\src\下。
+切换到protobuf-2.5.0\python 
+执行指令 python setup.py build, python setup.py test, python setup.py install
+

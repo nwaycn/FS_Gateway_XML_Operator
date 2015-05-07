@@ -2,7 +2,7 @@
 #include "stdio.h"
 #include "../libs/tinyxml/tinyxml.h"
 
-int load_config( char* fs_conf_path, short* port )
+int load_config( char* fs_conf_path, short* port , short* push_l_port)
 {
 	int res_status = 0;
 	TiXmlDocument doc(NWAY_GATEWAY_OPERATE_CONFIG_FILE);
@@ -29,11 +29,18 @@ int load_config( char* fs_conf_path, short* port )
 			*port = atoi(szTmp);
 
 		}
+		TiXmlElement* push_port_ele = root->FirstChildElement(NWAY_GATEWAY_OPERATE_CONFIG_PUSH_PORT);
+		if (push_port_ele && push_port_ele->GetText())
+		{
+			char szTmp[30];
+			strcpy(szTmp, push_port_ele->GetText());
+			*push_l_port = atoi(szTmp);
+		}
 	}
 	return res_status;
 }
 
-int save_sample_config( const char* fs_conf_path, short port )
+int save_sample_config( const char* fs_conf_path, short port , short push_l_port)
 {
 	int res_status = 0;
 	char szTmp[30];
@@ -71,8 +78,18 @@ int save_sample_config( const char* fs_conf_path, short port )
 	TiXmlText* pPort_txt = new TiXmlText(szTmp);
 	pPort->LinkEndChild(pPort_txt);
 	//////////////////////////////////////////////////////////////////////////
+	TiXmlElement* pPushPort = new TiXmlElement(NWAY_GATEWAY_OPERATE_CONFIG_PUSH_PORT);
+	if (push_l_port<1000 || push_l_port > 65535)
+	{
+		push_l_port = 8099;
+	}
+	sprintf(szTmp,"%d",push_l_port);
+	TiXmlText* pPushPort_txt = new TiXmlText(szTmp);
+	pPushPort->LinkEndChild(pPushPort_txt);
+	//////////////////////////////////////////////////////////////////////////
 	pRoot->LinkEndChild(pFS_conf_path);
 	pRoot->LinkEndChild(pPort);
+	pRoot->LinkEndChild(pPushPort);
 	doc->SaveFile(NWAY_GATEWAY_OPERATE_CONFIG_FILE);
 	if (doc)
 	{

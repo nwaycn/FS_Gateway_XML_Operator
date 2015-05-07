@@ -11,12 +11,19 @@ int exch_msg_parse( iop_base_t* base, int id,const char* data,int len , const ch
 {
 	int res_status = 0;
     char* buf =(char*) malloc(len);
-	strncpy(buf,data,len);
-	//必须另外拷贝，否则可能会被新的缓冲数据存坏
-	MsgHead h;
-	h.ParseFromArray(buf,len);
-	int allLen = h.ByteSize();
+	//strncpy(buf,data,len);
 	int nheadlen =  get_head_len();
+	memcpy(buf,data,len);
+	
+	//必须另外拷贝，否则可能会被新的缓冲数据存坏
+	char* headbuf = (char*)malloc(nheadlen);
+	memcpy(headbuf,buf,nheadlen);
+	MsgHead h;
+
+	h.ParseFromArray(headbuf,nheadlen);
+	free(headbuf);
+	int allLen = h.ByteSize();
+	
 	int recvLen = h.nway_length() + nheadlen;
 	switch (h.command())
 	{
@@ -24,7 +31,10 @@ int exch_msg_parse( iop_base_t* base, int id,const char* data,int len , const ch
 		{
 			get_nway_gateways_req req;
 			get_nway_gateways_rsp rsp;
-			req.ParseFromArray(buf+ nheadlen, h.nway_length());
+			char* mybuf =(char*) malloc(h.nway_length());
+			memcpy(mybuf,buf+ nheadlen,h.nway_length());
+			req.ParseFromArray(mybuf, h.nway_length());
+			free(mybuf);
 			//需要获取获得哪些文件，并生成相应的gateway数据
 			nway_filename nf;
 			int nres = get_file_list(fs_conf_path, &nf,req.start_pos(),req.number_per_page());
@@ -37,10 +47,14 @@ int exch_msg_parse( iop_base_t* base, int id,const char* data,int len , const ch
 			rsp.set_status(st);
 			while ( curr_file)
 			{
-				nway_gateway* ng = rsp.add_gateways();
-				read_gateway_from_file(curr_file->szFullPath, *ng);
-
+				
+				if (curr_file->szFullPath)
+				{
+					nway_gateway* ng = rsp.add_gateways();
+					read_gateway_from_file(curr_file->szFullPath, *ng);
+				}
 				curr_file = curr_file->next;
+				
 			}
 			MsgHead rsph;
 			rsph.set_nway_length(rsp.ByteSize());
@@ -50,6 +64,7 @@ int exch_msg_parse( iop_base_t* base, int id,const char* data,int len , const ch
 			rsph.AppendToString(&send_data);
 			rsp.AppendToString(&send_data);
 			iop_buf_send(base,id,send_data.c_str(),send_data.length());
+			printf("send rsp length:%d\n",send_data.length());
 		}
 		break;
 	//case GXOP_CMD_GET_GATEWAY_REQ:
@@ -110,6 +125,9 @@ int exch_msg_parse( iop_base_t* base, int id,const char* data,int len , const ch
 		{
 			erase_nway_gateway_req req;
 			erase_nway_gateway_rsp rsp;
+			/*char sztmp[2048];
+			memcpy(sztmp,buf+ nheadlen,h.nway_length());
+			req.ParseFromArray(sztmp,h.nway_length());*/
 			req.ParseFromArray(buf+ nheadlen, h.nway_length());
 			int nres = erase_gateway(fs_conf_path,req.gateway());
 			nway_op_status st = success;
@@ -122,7 +140,7 @@ int exch_msg_parse( iop_base_t* base, int id,const char* data,int len , const ch
 			rsp.set_res_text("");
 			MsgHead rsph;
 			rsph.set_nway_length(rsp.ByteSize());
-			rsph.set_command(GXOP_CMD_GET_GATEWAY_EDIT_RSP);
+			rsph.set_command(GXOP_CMD_GET_GATEWAY_ERASE_RSP);
 			rsph.set_cmd_flag(id);
 			string send_data;
 			rsph.AppendToString(&send_data);
