@@ -67,3 +67,44 @@ windows中：
 	
 	获取并遍历所有的网关配置的内容
   
+  
+  
+  客户端：
+  现阶段采用python flask实现的一个简易的restful接口
+  
+  比如要重新加载freeswitch的网关，则调用类似：
+  
+  http://localhost:8090/api/v1.0/reload_gateways  ，可以提交不提交则运行的fs_cli不带相关参数，参数有三个：shost ，sport， spassword，分别为freeswitch的服务器的host,freeswitch的esl port及密码
+  
+  
+  获取网关列表，调用：
+  
+  http://localhost:8090/api/v1.0/get_gateways， 必须提交的参数：start_pos，number_per_page，类似分页，分别为开始取的文件序列，每页获取到的网关数量
+  
+  
+  添加网关，调用：
+  
+  http://localhost:8090/api/v1.0/add_gateway，参数清单如下：
+  
+  	gateway_name,username, realm, from_user, from_domain, password, extension ,
+        proxy, expire_seconds, register, register_transport, retry_seconds, caller_id_in_from, 
+    	contact_params, ping, filename, register_proxy
+
+
+  修改网关，调用：
+  
+  http://localhost:8090/api/v1.0/edit_gateway，参数清单如下：
+  
+  	gateway_name,username, realm, from_user, from_domain, password, extension ,
+        proxy, expire_seconds, register, register_transport, retry_seconds, caller_id_in_from, 
+    	contact_params, ping, filename, register_proxy
+
+  
+  删除网关，调用：
+  http://localhost:8090/api/v1.0/del_gateway，参数为：
+  
+  gateway_name
+  
+  
+  在里边用了一个默认的验证检测，用户名为: ok, 密码为：python ,只有通过验证才能进行相关的操作
+  
