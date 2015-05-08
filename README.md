@@ -14,6 +14,7 @@ windows中：
 
 
 当前版本支持直接调用库来处理FreeSWITCH的conf/sip_profile/external下的文件，头文件如下：
+
         include "configure.h"
         include "../common/nwayfile.h"
         include "../common/gateway_file.h"
@@ -21,7 +22,9 @@ windows中：
 如果没有配置过路径或其它的配置项，则先配置一个默认的配置文件：
 
         save_sample_config("/usr/local/freeswitch/conf/sip_profile/external",9099);
-/usr/local/freeswitch/conf/sip_profile/external 为配置路径
+/usr/local/freeswitch/conf/sip_profile/external 
+
+为配置路径
 9099为监听网络请求连接的端口，tcp的
 
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
@@ -29,7 +32,9 @@ windows中：
         nway_filename* files = (nway_filename*)malloc(sizeof(nway_filename));
 这是一个配置的网关文件的列表结构体
 如果采用指针使用的话，则在使用结束时，调用
+
         destory_file_list(files);
+        
         来释放
 
 、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
@@ -45,10 +50,12 @@ windows中：
 	gw.set_register_transport("tport=tcp");
 	gw.set_expire_seconds("30");
 	add_gateway("c:\\xml",gw);
+	
 	添加一个新的网关配置文件
 	、、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 	
 	int icount = get_gateway_count("c:\\xml");
+	
 	获取网关文件的数量
 	、、、、、、、、、、、、、、、、、、、、、、、、、、、、、
 	
@@ -65,35 +72,54 @@ windows中：
 		cur_file = cur_file->next;
 	}
 	
+	
 	获取并遍历所有的网关配置的内容
   
   
   
   客户端：
+  
   现阶段采用python flask实现的一个简易的restful接口
   
   比如要重新加载freeswitch的网关，则调用类似：
   
-  http://localhost:8090/api/v1.0/reload_gateways  ，可以提交不提交则运行的fs_cli不带相关参数，参数有三个：shost ，sport， spassword，分别为freeswitch的服务器的host,freeswitch的esl port及密码
+  http://localhost:8090/api/v1.0/reload_gateways 
+  
+  可以提交不提交则运行的fs_cli不带相关参数，参数有三个：
+  
+  shost ，sport， spassword，
+  
+  分别为freeswitch的服务器的host,freeswitch的esl port及密码
   
   
   获取网关列表，调用：
   
-  http://localhost:8090/api/v1.0/get_gateways， 必须提交的参数：start_pos，number_per_page，类似分页，分别为开始取的文件序列，每页获取到的网关数量
+  http://localhost:8090/api/v1.0/get_gateways
+  
+  必须提交的参数：
+  
+  start_pos，number_per_page，
+  
+  类似分页，分别为开始取的文件序列，每页获取到的网关数量
   
   
   添加网关，调用：
   
-  http://localhost:8090/api/v1.0/add_gateway，参数清单如下：
+  http://localhost:8090/api/v1.0/add_gateway
+  
+  参数清单如下：
   
   	gateway_name,username, realm, from_user, from_domain, password, extension ,
         proxy, expire_seconds, register, register_transport, retry_seconds, caller_id_in_from, 
     	contact_params, ping, filename, register_proxy
 
 
+
   修改网关，调用：
   
-  http://localhost:8090/api/v1.0/edit_gateway，参数清单如下：
+  http://localhost:8090/api/v1.0/edit_gateway
+  
+  参数清单如下：
   
   	gateway_name,username, realm, from_user, from_domain, password, extension ,
         proxy, expire_seconds, register, register_transport, retry_seconds, caller_id_in_from, 
@@ -101,7 +127,10 @@ windows中：
 
   
   删除网关，调用：
-  http://localhost:8090/api/v1.0/del_gateway，参数为：
+  
+  http://localhost:8090/api/v1.0/del_gateway
+  
+  参数为：
   
   gateway_name
   
